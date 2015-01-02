@@ -60,9 +60,7 @@ void ReadNLFileUsingMP(const char *filename) {
 // Reads an nl file and build an mp::Problem object using mp::ReadNLFile.
 void ReadNLFileAndBuildProblemUsingMP(const char *filename) {
   mp::Problem problem;
-  // TODO
-  //mp::ProblemBuilderToNLAdapter<mp::Problem> adapter(problem);
-  //mp::ReadNLFile(filename, adapter);
+  mp::ReadNLFile(filename, problem);
 }
 
 // Reads an nl file using ASL functions jac0dim and fg_read.
@@ -74,7 +72,7 @@ void ReadNLFileUsingASL(const char *filename) {
 }
 
 int PrintUsage(char **argv) {
-  fmt::print(stderr, "usage: {} [io|mp|asl] FILE...\n", argv[0]);
+  fmt::print(stderr, "usage: {} [io|mp-read|mp-build|asl] FILE...\n", argv[0]);
   return 0;
 }
 
@@ -86,8 +84,10 @@ int main(int argc, char **argv) {
     char **filenames = argv + 2;
     if (std::strcmp(method, "io") == 0)
       Time(ReadFile, filenames);
-    else if (std::strcmp(method, "mp") == 0)
+    else if (std::strcmp(method, "mp-read") == 0)
       Time(ReadNLFileUsingMP, filenames);
+    else if (std::strcmp(method, "mp-build") == 0)
+      Time(ReadNLFileAndBuildProblemUsingMP, filenames);
     else if (std::strcmp(method, "asl") == 0)
       Time(ReadNLFileUsingASL, filenames);
     else PrintUsage(argv);
