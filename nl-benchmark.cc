@@ -44,11 +44,22 @@ void Time(Func func, char **filenames) {
 }
 
 // Reads a file and returns the last character.
-void ReadFile(const char *filename) {
+std::size_t ReadFile(const char *filename) {
+  enum {BUFFER_SIZE = 4096};
+  char buffer[BUFFER_SIZE];
   std::FILE *f = std::fopen(filename, "r");
-  while (fgetc(f) != EOF)
-    ;  // Do nothing.
+  std::size_t size = 0;
+  for (;;) {
+    std::size_t num_read = std::fread(buffer, 1, BUFFER_SIZE, f);
+    size += num_read;
+    if (num_read < BUFFER_SIZE) {
+      if (!std::feof(f))
+        throw std::runtime_error("I/O error");
+      break;
+    }
+  }
   std::fclose(f);
+  return size;
 }
 
 // Reads an nl file using mp::ReadNLFile.
