@@ -23,7 +23,7 @@
 #include <cstring>
 
 #include "mp/clock.h"
-#include "mp/nl.h"
+#include "mp/nl-reader.h"
 #include "mp/problem.h"
 #include "mp/problem-builder.h"
 
@@ -64,7 +64,7 @@ std::size_t ReadFile(const char *filename) {
 
 // Reads an nl file using mp::ReadNLFile.
 void ReadNLFileUsingMP(const char *filename) {
-  mp::NLHandler<int> handler;
+  mp::NullNLHandler<int> handler;
   mp::ReadNLFile(filename, handler);
 }
 
